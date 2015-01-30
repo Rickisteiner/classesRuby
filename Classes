@@ -1,0 +1,164 @@
+Classes - 
+
+Basically objects and constructors with Ruby.
+
+A class is a blur print for creating objects.
+
+this is the same as - 
+
+var Person = function (name, age) {
+	this.name = name;
+	this.age = age;
+	this.sayHello = function(){
+	  console.log("Hi, my name is" + this.name);
+	};
+};
+
+var sam = new Person ("sam");
+sam.sayHello
+
+....is the same as:
+
+same = Person.new(name,age)
+
+class Person
+  def initialize (name,age)
+  @name = name
+  @age = age
+end
+def say_hello
+  puts "Hi, my name is "#{@name}"
+end
+end
+
+In Ruby, this is a method on an object.
+Also, whether or not you use intialize - Ruby will implement it.
+
+class Person
+  def initialize (name,age)
+  @name = name
+  @age = age
+end
+sam = Person.new(name,age)
+def say_hello
+  puts "Hi, my name is "#{@name}"
+end
+def name 
+  return @name
+end
+def age
+  return @age
+end
+
+-This way only returns the name but you can't do anything with it.
+- You need to have some kind of def name if you want to be able to access these outside the initialize method.
+
+We can also do something like this -
+
+def name = (name)
+  @name=name
+end
+end
+-this is a method that would go inside the class.
+-So instead you would be doing sam.name.
+-This way allows you to actually do something with name.
+
+- You are going to want to use both of these methods each time. The first is the "getter" the second "setter"
+
+Once we have the second method defined we can do something like sam.name = "crawford" will actually change Sam to Crawford. So when you do sam.name it would puts Crawford. But, at this point, we don't have an age method so that part wouldn't work.
+
+BUT there's a trick:
+
+class Person
+  attr_reader :name
+  attr_writer :name
+  def initialize (name,age)
+  @name = name
+  @age = age
+end
+def say_hello
+  puts "Hi, my name is "#{@name}"
+end
+
+Then you get both those methods. If you want both - you can do attr_accessor :name, :age
+  will get you the getters and the setters - you will always still need the initialize though to define everything.
+
+- You might not always want to write it because it will effect your class, but you will usually want to read it. But sometimes you want nothing.
+
+- Sometimes you will want to write out the methods because you might want it to do something beyond just returning. Maybe you want to log it somewhere else.
+
+class Dog
+  attr_accessor :name, :owner
+def initialize (name,owner)
+  @name=name
+  @owner=owner
+end
+def bark 
+  puts "bark"
+ end
+end
+
+class Cat
+  attr accessor :name, :owner
+def initialize(name,owner)
+  @name=name
+  @owner=owner
+end
+def meow
+  puts "meow"
+ end
+end
+
+- We have here too clases that are the same until the bottom parts. Can we solved this? YES, Inheritance. (Remember how that works from sass?)
+
+class Animal
+  attr_accessor :name, :owner
+def initialize (name,owner)
+  @name=name
+  @owner=owner
+ end
+end
+
+class Dog < Animal
+def bark 
+  puts "bark"
+ end
+end
+
+class Cat < Animal
+def meow
+  puts "meow"
+ end
+end
+
+d = Dog.new ("Waffles", "peach")
+puts d.name
+puts d.owner
+d.name = "Rex"
+  which will change the name
+d.bark
+  this will give us "bark"
+
+- We can not make it meow (and same for cat barking) because bark is only defined for dog and vice versa.
+
+c = cat.new("Felix","Peach")
+c.meow    
+
+- We can also keep making animals - 
+a = Animal.new ("Girrafe", "Peach")
+puts a.name
+a.name="horse"
+  again, we can't use bark or meow.
+
+
+If we added type to Animal.
+
+class Cat < Animal 
+ def initialize(name,owner)
+  super(name,owner,"cat")  - super calls from the super class (Animal). So the local params will overide that but type will still be called from the super class.
+ end
+ def meow
+  puts "meow"
+ end
+end
+
